@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admin2023!
+      POSTGRES_DB: teste
+      POSTGRES_HOST_AUTH_METHOD: password
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-teste-data:/var/lib/postgresql/data
+    networks:
+      - teste-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'teste@teste.app'
+      PGADMIN_DEFAULT_PASSWORD: 'Admin2023!'
+    ports:
+      - 16543:80
+    depends_on:
+      - database
+    networks:
+      - teste-network
+
+volumes:
+  postgres-teste-data:
+    driver: local
+networks:
+  teste-network:
